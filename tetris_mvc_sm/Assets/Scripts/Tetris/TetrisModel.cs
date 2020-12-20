@@ -58,5 +58,49 @@ namespace Models
             Field = new CellState[Width, Height];
             _figure = null;
         }
+
+        public bool MoveFigureLeft()
+        {
+            return InternalMoveFigureLeft();
+        }
+        
+        public bool MoveFigureRight()
+        {
+            return InternalMoveFigureLeft(-1);
+        }
+
+        private bool InternalMoveFigureLeft(int offset = 1)
+        {
+            bool canMove = false;
+            for (int x = 0; x < Figure.Width; x++)
+            {
+                for (int y = 0; y < Figure.Height; y++)
+                {
+                    int xPos = Figure.Positions[x, y].x;
+                    int yPos = Figure.Positions[x, y].y;
+                    bool targetXIsCorrect = xPos - offset >= 0 && xPos - offset < Width;
+                    canMove = targetXIsCorrect && Field[xPos - offset, yPos] != CellState.Filled;
+                    if(canMove == false)
+                    {
+                        break;
+                    }
+                }
+                if (canMove == false)
+                {
+                    break;
+                }
+            }
+            if (canMove)
+            {
+                for (int x = 0; x < Figure.Width; x++)
+                {
+                    for (int y = 0; y < Figure.Height; y++)
+                    {
+                        Figure.Positions[x, y].x -= offset;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

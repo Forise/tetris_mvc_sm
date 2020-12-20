@@ -10,12 +10,12 @@ public class FigureEditor : Editor
 
         using (var verticalScope = new EditorGUILayout.VerticalScope())
         {
-            for (int y = 0; y < Figure.Height; y++)
+            for (int y = 0; y < Figure.HEIGHT; y++)
             {
                 using (var horizontalScope = new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.PrefixLabel(y.ToString());
-                    for (int x = 0; x < Figure.Width; x++)
+                    for (int x = 0; x < Figure.WIDTH; x++)
                     {
                         bool oldState = figure.Cells[x, y];
                         bool newState = EditorGUILayout.Toggle(oldState);

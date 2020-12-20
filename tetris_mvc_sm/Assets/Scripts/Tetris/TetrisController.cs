@@ -8,12 +8,21 @@ public class TetrisController : ITetrisController
     public ITetrisModel Model { get; private set; }
     public IFigureFactory Factory { get; private set; }
 
-    public void MoveFigureLeft()
+    public TetrisController(ITetrisModel model, IFigureFactory figureFactory)
     {
+        Model = model;
+        Factory = figureFactory;
     }
 
-    public void MoveFigureRight()
+    public bool MoveFigureLeft()
     {
+
+        return false;
+    }
+
+    public bool MoveFigureRight()
+    {
+        return false;
     }
 
     public bool RotateFigureLeft()

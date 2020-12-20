@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: I
   m_EditorClassIdentifier: 
   color: {r: 0.5660378, g: 0.045389827, b: 0.045389827, a: 1}
+  _figureType: 5
