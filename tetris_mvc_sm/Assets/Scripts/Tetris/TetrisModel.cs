@@ -75,19 +75,22 @@ namespace Models
                 return false;
             }
 
-            bool canMove = false;
+            bool canMove = true;
 
             for (int x = 0; x < Figure.Width; x++)
             {
                 for (int y = 0; y < Figure.Height; y++)
                 {
-                    int xPos = Figure.Positions[x, y].x;
-                    int yPos = Figure.Positions[x, y].y;
-                    bool targetYIsCorrect = yPos + 1 >= 0 && yPos + 1 < Width;
-                    canMove = targetYIsCorrect && Field[xPos, yPos + 1] != CellState.Filled;
-                    if (canMove == false)
+                    if (Figure[x, y])
                     {
-                        return false;
+                        int xPos = Figure.Positions[x, y].x;
+                        int yPos = Figure.Positions[x, y].y;
+                        bool targetYIsCorrect = yPos + 1 >= 0 && yPos + 1 < Height;
+                        canMove = targetYIsCorrect && Field[xPos, yPos + 1] != CellState.Filled;
+                        if (canMove == false)
+                        {
+                            return false;
+                        }
                     }
                 }
                 if (canMove == false)

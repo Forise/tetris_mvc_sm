@@ -16,8 +16,8 @@ public class UnityTetrisController : MonoBehaviour
     {
         var model = _unityTetrisModel.Model;
         Controller = new TetrisController(model, _figureFactory);
-        //StartCoroutine(Run());
-        Controller.testInstantiate();
+        StartCoroutine(Run());
+        //Controller.testInstantiate();
     }
 
     private void Update()
