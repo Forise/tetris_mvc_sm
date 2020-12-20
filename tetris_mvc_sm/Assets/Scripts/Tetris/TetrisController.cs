@@ -24,14 +24,14 @@ public class TetrisController : ITetrisController
         Model.MoveFigureRight();
     }
 
-    public bool RotateFigureLeft()
+    public void RotateFigureLeft()
     {
-        return false;
+        Model.RotateFigureLeft();
     }
 
-    public bool RotateFigureRight()
+    public void RotateFigureRight()
     {
-        return false;
+        Model.RotateFigureRight();
     }
 
     public void testInstantiate()

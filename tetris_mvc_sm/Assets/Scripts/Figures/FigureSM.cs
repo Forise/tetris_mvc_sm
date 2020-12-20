@@ -47,14 +47,23 @@ public class FigureSM : CycledStateMachine, IFigure
         return _cells[y * WIDTH + x];
     }
 
+    public void RotateRight()
+    {
+        SetNextState();
+    }
+    public void RotateLeft()
+    {
+        SetPreviousState();
+    }
+
     #region State Machine
     protected override void InitializeMachine()
     {
         CreateStates(typeof(RotationState));
-        InitializeState((int)RotationState.Rot0, null, null, null);
-        InitializeState((int)RotationState.Rot90, null, null, null);
-        InitializeState((int)RotationState.Rot180, null, null, null);
-        InitializeState((int)RotationState.Rot270, null, null, null);
+        InitializeState((int)RotationState.Rot0, () => { _cells = _cellsRotation0; }, null, null);
+        InitializeState((int)RotationState.Rot90, () => { _cells = _cellsRotation90; }, null, null);
+        InitializeState((int)RotationState.Rot180, () => { _cells = _cellsRotation180; }, null, null);
+        InitializeState((int)RotationState.Rot270, () => { _cells = _cellsRotation270; }, null, null);
         SetState((int)RotationState.Rot0);
     }
 

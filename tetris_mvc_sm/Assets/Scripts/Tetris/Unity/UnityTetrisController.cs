@@ -30,6 +30,15 @@ public class UnityTetrisController : MonoBehaviour
         {
             Controller.MoveFigureRight();
         }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Controller.RotateFigureLeft();
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            Controller.RotateFigureRight();
+        }
     }
 
     IEnumerator Run()
