@@ -7,11 +7,10 @@ public class Figure : ScriptableObject, IFigure
 {
     #region Fields
     [SerializeField]
-    private Color color;
+    private Color _color;
     [SerializeField]
     private FigureType _figureType;
-    private bool[,] _cells = new bool[WIDTH, HEIGHT];
-    private Vector2Int[,] _positions = new Vector2Int[WIDTH, HEIGHT];
+    private bool[] _cells = new bool[WIDTH * HEIGHT];
     #endregion Fields
 
     #region Properties
@@ -20,24 +19,25 @@ public class Figure : ScriptableObject, IFigure
     public int Width => WIDTH;
     public int Height => HEIGHT;
     public FigureType FigureType => _figureType;
-    public bool[,] Cells => _cells;
-    public Vector2Int[,] Positions => _positions;
+    public bool[] Cells => _cells;
+    public Color Color => _color;
+    public bool this[int x, int y]
+    {
+        get => IsCellPartOfFigure(x, y);
+        set
+        {
+            _cells[y * WIDTH + x] = value;
+        }
+    }
+    public Vector2Int[,] Positions { get; set; } = new Vector2Int[WIDTH, HEIGHT];
     #endregion Properties;
 
     public Figure()
     {
-        _positions = new Vector2Int[Width, Height];
+        Positions = new Vector2Int[Width, Height];
     }
-
-    public void MoveLeft()
+    private bool IsCellPartOfFigure(int x, int y)
     {
-
+        return _cells[y * WIDTH + x];
     }
-
-#if UNITY_EDITOR
-    public void SetCellEditor(int x, int y, bool value)
-    {
-        _cells[x, y] = value;
-    }
-#endif
 }

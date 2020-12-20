@@ -9,8 +9,13 @@ namespace Models
     {
         int Width { get; }
         int Height { get; }
-        IFigure Figure { get; }
+        IFigure Figure { get; set; }
         CellState[,] Field { get; }
         event ModelChanged ModelChanged;
+        bool MoveFigureLeft();
+        bool MoveFigureRight();
+        bool MoveFigureDown();
+        bool RotateFigureLeft();
+        bool RotateFigureRight();
     }
 }

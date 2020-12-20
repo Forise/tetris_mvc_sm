@@ -75,7 +75,9 @@
     <Compile Include="Assets\Scripts\Tetris\ITetrisModel.cs" />
     <Compile Include="Assets\Scripts\Tetris\TetrisController.cs" />
     <Compile Include="Assets\Scripts\Tetris\TetrisModel.cs" />
-    <Compile Include="Assets\Scripts\Tetris\UnityTetrisView.cs" />
+    <Compile Include="Assets\Scripts\Tetris\Unity\UnityTetrisController.cs" />
+    <Compile Include="Assets\Scripts\Tetris\Unity\UnityTetrisModel.cs" />
+    <Compile Include="Assets\Scripts\Tetris\Unity\UnityTetrisView.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.16f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

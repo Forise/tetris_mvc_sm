@@ -14,15 +14,14 @@ public class TetrisController : ITetrisController
         Factory = figureFactory;
     }
 
-    public bool MoveFigureLeft()
+    public void MoveFigureLeft()
     {
-
-        return false;
+        Model.MoveFigureLeft();
     }
 
-    public bool MoveFigureRight()
+    public void MoveFigureRight()
     {
-        return false;
+        Model.MoveFigureRight();
     }
 
     public bool RotateFigureLeft()
@@ -35,8 +34,58 @@ public class TetrisController : ITetrisController
         return false;
     }
 
+    public void testInstantiate()
+    {
+        InstantiateFigure(Model, Factory);
+    }
+
     public bool Step()
     {
+        if (Model.Figure == null)
+        {
+            InstantiateFigure(Model, Factory);
+            if (FigureCollides(Model))
+                return false;
+        }
+
+        if (!Model.MoveFigureDown())
+        {
+            //TetrisUtil.ImprintFigure(Model);
+            //TetrisUtil.EraseCompleteLines(Model);
+            Model.Figure = null;
+        }
+
+        return true;
+    }
+
+    private void InstantiateFigure(ITetrisModel model, IFigureFactory figureFactory)
+    {
+        Model.Figure = figureFactory.GetRandomFigure;
+        for (int x = 0; x < Model.Figure.Width; x++)
+        {
+            for (int y = 0; y < Model.Figure.Height; y++)
+            {
+                Model.Figure.Positions[x, y] = new Vector2Int(x, y);
+            }
+        }
+    }
+
+    private bool FigureCollides(ITetrisModel model)
+    {
+        if (model.Figure == null)
+        {
+            return false;
+        }
+
+        //for (int y = 0; y < Figure.Height; y++)
+        //{
+        //    for (int x = 0; x < Figure.Width; x++)
+        //    {
+        //        if (Figure.At(x, y) && model.At(model.FigureX + x, model.FigureY + y))
+        //            return true;
+        //    }
+        //}
+
         return false;
     }
 }

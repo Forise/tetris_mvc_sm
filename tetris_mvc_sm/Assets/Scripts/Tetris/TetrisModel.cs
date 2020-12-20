@@ -12,10 +12,8 @@ namespace Models
 
         public int Height => 20;
 
-        private IFigure _figure;
-
         #region Properties
-        public IFigure Figure => _figure;
+        public IFigure Figure { get; set; }
 
         public CellState[,] Field
         {
@@ -27,7 +25,7 @@ namespace Models
         {
             get
             {
-                if(row < Width && col < Height && row >= 0 && col >= 0)
+                if (row < Width && col < Height && row >= 0 && col >= 0)
                 {
                     return Field[row, col];
                 }
@@ -56,38 +54,91 @@ namespace Models
         public TetrisModel()
         {
             Field = new CellState[Width, Height];
-            _figure = null;
+            Figure = null;
         }
 
+        #region Move/Rotation
         public bool MoveFigureLeft()
         {
             return InternalMoveFigureLeft();
         }
-        
+
         public bool MoveFigureRight()
         {
             return InternalMoveFigureLeft(-1);
         }
 
-        private bool InternalMoveFigureLeft(int offset = 1)
+        public bool MoveFigureDown()
         {
+            if (Figure == null)
+            {
+                return false;
+            }
+
             bool canMove = false;
+
             for (int x = 0; x < Figure.Width; x++)
             {
                 for (int y = 0; y < Figure.Height; y++)
                 {
                     int xPos = Figure.Positions[x, y].x;
                     int yPos = Figure.Positions[x, y].y;
-                    bool targetXIsCorrect = xPos - offset >= 0 && xPos - offset < Width;
-                    canMove = targetXIsCorrect && Field[xPos - offset, yPos] != CellState.Filled;
-                    if(canMove == false)
+                    bool targetYIsCorrect = yPos + 1 >= 0 && yPos + 1 < Width;
+                    canMove = targetYIsCorrect && Field[xPos, yPos + 1] != CellState.Filled;
+                    if (canMove == false)
                     {
-                        break;
+                        return false;
                     }
                 }
                 if (canMove == false)
                 {
-                    break;
+                    return false;
+                }
+            }
+            if (canMove)
+            {
+                for (int x = 0; x < Figure.Width; x++)
+                {
+                    for (int y = 0; y < Figure.Height; y++)
+                    {
+                        if (Figure[x, y])
+                        {
+                            Figure.Positions[x, y].y++;
+                        }
+                    }
+                }
+                ModelChanged?.Invoke();
+                return true;
+            }
+            return false;
+        }
+
+        private bool InternalMoveFigureLeft(int offset = 1)
+        {
+            if (Figure == null)
+            {
+                return false;
+            }
+            bool canMove = true;
+            for (int x = 0; x < Figure.Width; x++)
+            {
+                for (int y = 0; y < Figure.Height; y++)
+                {
+                    if (Figure[x, y])
+                    {
+                        int xPos = Figure.Positions[x, y].x;
+                        int yPos = Figure.Positions[x, y].y;
+                        bool targetXIsCorrect = xPos - offset >= 0 && xPos - offset < Width;
+                        canMove = targetXIsCorrect && Field[xPos - offset, yPos] != CellState.Filled;
+                        if (canMove == false)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                if (canMove == false)
+                {
+                    return false;
                 }
             }
             if (canMove)
@@ -99,8 +150,21 @@ namespace Models
                         Figure.Positions[x, y].x -= offset;
                     }
                 }
+                ModelChanged?.Invoke();
+                return true;
             }
             return false;
         }
+
+        public bool RotateFigureLeft()
+        {
+            return false;
+        }
+
+        public bool RotateFigureRight()
+        {
+            return false;
+        }
+        #endregion Move/Rotation
     }
 }

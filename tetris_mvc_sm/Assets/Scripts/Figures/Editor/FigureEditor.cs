@@ -8,21 +8,21 @@ public class FigureEditor : Editor
         base.OnInspectorGUI();
         var figure = (Figure)serializedObject.targetObject;
 
-        using (var verticalScope = new EditorGUILayout.VerticalScope())
+        using (var vert = new EditorGUILayout.VerticalScope())
         {
             for (int y = 0; y < Figure.HEIGHT; y++)
             {
-                using (var horizontalScope = new EditorGUILayout.HorizontalScope())
+                using (var horz = new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.PrefixLabel(y.ToString());
                     for (int x = 0; x < Figure.WIDTH; x++)
                     {
-                        bool oldState = figure.Cells[x, y];
-                        bool newState = EditorGUILayout.Toggle(oldState);
-                        if (newState != oldState)
+                        bool oldValue = figure[x, y];
+                        bool newValue = EditorGUILayout.Toggle(oldValue);
+                        if (newValue != oldValue)
                         {
-                            Undo.RecordObject(figure, "ChangeFigure");
-                            figure.SetCellEditor(x, y, newState);
+                            Undo.RecordObject(figure, "Figure Settings Changed");
+                            figure[x, y] = newValue;
                             EditorUtility.SetDirty(figure);
                         }
                     }
