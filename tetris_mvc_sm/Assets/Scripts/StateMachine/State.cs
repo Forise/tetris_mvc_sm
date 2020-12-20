@@ -1,14 +1,18 @@
-﻿public class State
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class State
 {
     public delegate void StateHandler();
-    protected StateHandler InitCallback, UpdateCallback, CloseCallback;
+    protected StateHandler InitCallback, UpdateCallback, ExitCallback;
 
     public State() { }
-    public State(StateHandler init, StateHandler update, StateHandler close)
+    public State(StateHandler init, StateHandler update, StateHandler exit)
     {
         InitCallback = init;
         UpdateCallback = update;
-        CloseCallback = close;
+        ExitCallback = exit;
     }
     #region Methods
     public virtual void Init()
@@ -23,12 +27,12 @@
 
     public virtual void Close()
     {
-        CloseCallback?.Invoke();
+        ExitCallback?.Invoke();
     }
 
     public override string ToString()
     {
-        return $"[State]: Init{(InitCallback != null ? InitCallback.Method.Name : "null")}, Close{(CloseCallback != null ? CloseCallback.Method.Name : "null")}, Update{(UpdateCallback != null ? UpdateCallback.Method.Name : "null")}";
+        return $"[State]: Init{(InitCallback != null ? InitCallback.Method.Name : "null")}, Exit{(ExitCallback != null ? ExitCallback.Method.Name : "null")}, Update{(UpdateCallback != null ? UpdateCallback.Method.Name : "null")}";
     }
     #endregion
 }

@@ -63,13 +63,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Figures\CycledStateMachine.cs" />
     <Compile Include="Assets\Scripts\Figures\Figure.cs" />
     <Compile Include="Assets\Scripts\Figures\FigureFactory.cs" />
+    <Compile Include="Assets\Scripts\Figures\FigureSM.cs" />
     <Compile Include="Assets\Scripts\Figures\FigureType.cs" />
     <Compile Include="Assets\Scripts\Figures\IFigure.cs" />
     <Compile Include="Assets\Scripts\Figures\IFigureFactory.cs" />
+    <Compile Include="Assets\Scripts\StateMachine\BaseStateMachine.cs" />
+    <Compile Include="Assets\Scripts\StateMachine\IStateMachine.cs" />
     <Compile Include="Assets\Scripts\StateMachine\State.cs" />
-    <Compile Include="Assets\Scripts\StateMachine\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Tetris\CellState.cs" />
     <Compile Include="Assets\Scripts\Tetris\ITetrisController.cs" />
     <Compile Include="Assets\Scripts\Tetris\ITetrisModel.cs" />
