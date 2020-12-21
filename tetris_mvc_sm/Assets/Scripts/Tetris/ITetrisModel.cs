@@ -17,5 +17,8 @@ namespace Models
         bool MoveFigureDown();
         bool RotateFigureLeft();
         bool RotateFigureRight();
+#if TEST
+        void NotifyChanged();
+#endif
     }
 }

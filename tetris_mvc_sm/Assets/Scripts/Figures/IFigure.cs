@@ -11,4 +11,6 @@ public interface IFigure
     int Height { get; }
     bool this[int x, int y] { get; set; }
     Color Color { get; }
+    void RotateRight();
+    void RotateLeft();
 }

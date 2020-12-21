@@ -16,8 +16,11 @@ public class UnityTetrisController : MonoBehaviour
     {
         var model = _unityTetrisModel.Model;
         Controller = new TetrisController(model, _figureFactory);
+#if TEST
+        Controller.testInstantiate();
+#else
         StartCoroutine(Run());
-        //Controller.testInstantiate();
+#endif
     }
 
     private void Update()
@@ -39,6 +42,13 @@ public class UnityTetrisController : MonoBehaviour
         {
             Controller.RotateFigureRight();
         }
+#if TEST
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Controller.Model.NotifyChanged();
+            Controller.Step();
+        }
+#endif
     }
 
     IEnumerator Run()

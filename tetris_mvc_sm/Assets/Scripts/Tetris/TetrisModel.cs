@@ -60,12 +60,12 @@ namespace Models
         #region Move/Rotation
         public bool MoveFigureLeft()
         {
-            return InternalMoveFigureLeft();
+            return InternalMoveFigureHorizontal(-1);
         }
 
         public bool MoveFigureRight()
         {
-            return InternalMoveFigureLeft(-1);
+            return InternalMoveFigureHorizontal(1);
         }
 
         public bool MoveFigureDown()
@@ -75,29 +75,7 @@ namespace Models
                 return false;
             }
 
-            bool canMove = true;
-
-            for (int x = 0; x < Figure.Width; x++)
-            {
-                for (int y = 0; y < Figure.Height; y++)
-                {
-                    if (Figure[x, y])
-                    {
-                        int xPos = Figure.Positions[x, y].x;
-                        int yPos = Figure.Positions[x, y].y;
-                        bool targetYIsCorrect = yPos + 1 >= 0 && yPos + 1 < Height;
-                        canMove = targetYIsCorrect && Field[xPos, yPos + 1] != CellState.Filled;
-                        if (canMove == false)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                if (canMove == false)
-                {
-                    return false;
-                }
-            }
+            bool canMove = CanFigureMove(0, 1);
             if (canMove)
             {
                 for (int x = 0; x < Figure.Width; x++)
@@ -106,8 +84,8 @@ namespace Models
                     {
                         if (Figure[x, y])
                         {
-                            Figure.Positions[x, y].y++;
                         }
+                            Figure.Positions[x, y].y++;
                     }
                 }
                 ModelChanged?.Invoke();
@@ -116,12 +94,30 @@ namespace Models
             return false;
         }
 
-        private bool InternalMoveFigureLeft(int offset = 1)
+        private bool InternalMoveFigureHorizontal(int offsetX = -1)
         {
             if (Figure == null)
             {
                 return false;
             }
+            bool canMove = CanFigureMove(offsetX, 0);
+            if (canMove)
+            {
+                for (int x = 0; x < Figure.Width; x++)
+                {
+                    for (int y = 0; y < Figure.Height; y++)
+                    {
+                        Figure.Positions[x, y].x += offsetX;
+                    }
+                }
+                ModelChanged?.Invoke();
+                return true;
+            }
+            return false;
+        }
+
+        private bool CanFigureMove(int offsetX, int offsetY)
+        {
             bool canMove = true;
             for (int x = 0; x < Figure.Width; x++)
             {
@@ -131,8 +127,9 @@ namespace Models
                     {
                         int xPos = Figure.Positions[x, y].x;
                         int yPos = Figure.Positions[x, y].y;
-                        bool targetXIsCorrect = xPos - offset >= 0 && xPos - offset < Width;
-                        canMove = targetXIsCorrect && Field[xPos - offset, yPos] != CellState.Filled;
+                        bool targetXIsCorrect = xPos + offsetX >= 0 && xPos + offsetX < Width;
+                        bool targetYIsCorrect = yPos + offsetY >= 0 && yPos + offsetY < Height;
+                        canMove = targetYIsCorrect && targetXIsCorrect && Field[xPos + offsetX, yPos] != CellState.Filled && Field[xPos, yPos + offsetY] != CellState.Filled;
                         if (canMove == false)
                         {
                             return false;
@@ -144,30 +141,73 @@ namespace Models
                     return false;
                 }
             }
-            if (canMove)
+            return canMove;
+        }
+
+        private bool IsFigureInsideField()
+        {
+            bool insideField = true;
+            for (int x = 0; x < Figure.Width; x++)
             {
-                for (int x = 0; x < Figure.Width; x++)
+                for (int y = 0; y < Figure.Height; y++)
                 {
-                    for (int y = 0; y < Figure.Height; y++)
+                    if (Figure[x, y])
                     {
-                        Figure.Positions[x, y].x -= offset;
+                        int xPos = Figure.Positions[x, y].x;
+                        int yPos = Figure.Positions[x, y].y;
+                        bool targetXIsCorrect = xPos >= 0 && xPos < Width;
+                        bool targetYIsCorrect = yPos >= 0 && yPos < Height;
+                        insideField = targetYIsCorrect && targetXIsCorrect && Field[xPos, yPos] != CellState.Filled && Field[xPos, yPos] != CellState.Filled;
+                        if (insideField == false)
+                        {
+                            return false;
+                        }
                     }
                 }
-                ModelChanged?.Invoke();
-                return true;
+                if (insideField == false)
+                {
+                    return false;
+                }
             }
-            return false;
+            return insideField;
         }
 
         public bool RotateFigureLeft()
         {
+            Figure.RotateLeft();
+            if (IsFigureInsideField())
+            {
+                ModelChanged?.Invoke();
+            }
+            else
+            {
+                Figure.RotateRight();
+            }
             return false;
         }
 
         public bool RotateFigureRight()
         {
+            Figure.RotateRight();
+            if (IsFigureInsideField())
+            {
+                ModelChanged?.Invoke();
+            }
+            else
+            {
+                Figure.RotateLeft();
+            }
             return false;
         }
         #endregion Move/Rotation
+
+        #region TEST
+#if TEST
+        public void NotifyChanged()
+        {
+            ModelChanged?.Invoke();
+        }
+#endif
+        #endregion TEST
     }
 }

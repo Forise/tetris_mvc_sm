@@ -68,6 +68,7 @@ public class TetrisController : ITetrisController
                 Model.Figure.Positions[x, y] = new Vector2Int(x, y);
             }
         }
+        Model.NotifyChanged();
     }
 
     private bool FigureCollides(ITetrisModel model)

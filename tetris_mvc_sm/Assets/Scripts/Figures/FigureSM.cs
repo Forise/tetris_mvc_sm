@@ -40,6 +40,7 @@ public class FigureSM : CycledStateMachine, IFigure
     public FigureSM()
     {
         Positions = new Vector2Int[Width, Height];
+        InitializeMachine();
     }
 
     private bool IsCellPartOfFigure(int x, int y)
@@ -60,10 +61,22 @@ public class FigureSM : CycledStateMachine, IFigure
     protected override void InitializeMachine()
     {
         CreateStates(typeof(RotationState));
-        InitializeState((int)RotationState.Rot0, () => { _cells = _cellsRotation0; }, null, null);
-        InitializeState((int)RotationState.Rot90, () => { _cells = _cellsRotation90; }, null, null);
-        InitializeState((int)RotationState.Rot180, () => { _cells = _cellsRotation180; }, null, null);
-        InitializeState((int)RotationState.Rot270, () => { _cells = _cellsRotation270; }, null, null);
+        InitializeState((int)RotationState.Rot0, () => 
+        { 
+            _cells = _cellsRotation0; 
+        }, null, null);
+        InitializeState((int)RotationState.Rot90, () => 
+        { 
+            _cells = _cellsRotation90; 
+        }, null, null);
+        InitializeState((int)RotationState.Rot180, () => 
+        { 
+            _cells = _cellsRotation180; 
+        }, null, null);
+        InitializeState((int)RotationState.Rot270, () => 
+        { 
+            _cells = _cellsRotation270; 
+        }, null, null);
         SetState((int)RotationState.Rot0);
     }
 
