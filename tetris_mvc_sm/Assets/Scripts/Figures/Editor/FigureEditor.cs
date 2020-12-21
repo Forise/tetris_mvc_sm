@@ -8,31 +8,6 @@ public class FigureEditor : Editor
         base.OnInspectorGUI();
         var figure = (Figure)serializedObject.targetObject;
 
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Cells");
-
-        using (var vert = new EditorGUILayout.VerticalScope())
-        {
-            for (int y = 0; y < FigureSM.HEIGHT; y++)
-            {
-                using (var horz = new EditorGUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.PrefixLabel(y.ToString());
-                    for (int x = 0; x < FigureSM.WIDTH; x++)
-                    {
-                        bool oldValue = figure.IFigure[x, y];
-                        bool newValue = EditorGUILayout.Toggle(oldValue);
-                        if (newValue != oldValue)
-                        {
-                            Undo.RecordObject(figure, "Figure Settings Changed");
-                            figure.IFigure[x, y] = newValue;
-                            EditorUtility.SetDirty(figure);
-                        }
-                    }
-                }
-            }
-        }
-
         var statesType = typeof(FigureSM.RotationState);
         var states = System.Enum.GetValues(statesType);
 
@@ -71,6 +46,7 @@ public class FigureEditor : Editor
                             if (newValue != oldValue)
                             {
                                 Undo.RecordObject(figure, "Figure Settings Changed");
+                                figure.IFigure.Cells = new bool[FigureSM.WIDTH * FigureSM.HEIGHT];
                                 switch (indexer)
                                 {
                                     case 0:

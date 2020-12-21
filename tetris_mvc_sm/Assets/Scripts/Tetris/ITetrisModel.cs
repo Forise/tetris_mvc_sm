@@ -12,9 +12,11 @@ namespace Models
         IFigure Figure { get; set; }
         CellState[,] Field { get; }
         event ModelChanged ModelChanged;
+        event System.Action LineCleared;
         bool MoveFigureLeft();
         bool MoveFigureRight();
         bool MoveFigureDown();
+        void DropFigure();
         bool RotateFigureLeft();
         bool RotateFigureRight();
         void SetFigureToField();

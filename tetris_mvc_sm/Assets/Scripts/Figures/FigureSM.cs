@@ -7,6 +7,8 @@ public class FigureSM : CycledStateMachine, IFigure
 {
     #region Fields
     [SerializeField]
+    private float _updateStateTime;
+    [SerializeField]
     private Color _color;
     [SerializeField]
     private FigureType _figureType;
@@ -24,7 +26,14 @@ public class FigureSM : CycledStateMachine, IFigure
     public int Width => WIDTH;
     public int Height => HEIGHT;
     public FigureType FigureType => _figureType;
-    public bool[] Cells => _cells;
+    public bool[] Cells
+    {
+        get => _cells;
+        set
+        {
+            _cells = value;
+        }
+    }
     public Color Color => _color;
     public bool this[int x, int y]
     {
@@ -63,29 +72,29 @@ public class FigureSM : CycledStateMachine, IFigure
         CreateStates(typeof(RotationState));
         InitializeState((int)RotationState.Rot0, () => 
         { 
-            _cells = _cellsRotation0; 
+            _cells = _cellsRotation0;
         }, null, null);
         InitializeState((int)RotationState.Rot90, () => 
         { 
-            _cells = _cellsRotation90; 
+            _cells = _cellsRotation90;
         }, null, null);
         InitializeState((int)RotationState.Rot180, () => 
         { 
-            _cells = _cellsRotation180; 
+            _cells = _cellsRotation180;
         }, null, null);
         InitializeState((int)RotationState.Rot270, () => 
         { 
-            _cells = _cellsRotation270; 
+            _cells = _cellsRotation270;
         }, null, null);
-        SetState((int)RotationState.Rot0);
+        SetState(CurrentStateIndex);
     }
 
     public enum RotationState
     {
-        Rot0,
-        Rot90,
-        Rot180,
-        Rot270
+        Rot0 = 0,
+        Rot90 = 1,
+        Rot180 = 2,
+        Rot270 = 3
     }
     #endregion State Machine
 

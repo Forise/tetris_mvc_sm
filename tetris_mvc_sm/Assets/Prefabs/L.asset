@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: L
   m_EditorClassIdentifier: 
   figure:
+    _updateStateTime: 0
     _color: {r: 1, g: 0.9167996, b: 0, a: 1}
     _figureType: 3

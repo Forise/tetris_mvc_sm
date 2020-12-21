@@ -3,7 +3,7 @@
 public abstract class BaseSateMachine
 {
     #region Fields
-    private int currentStateIndex;
+    private int currentStateIndex = 0;
     private State currentState;
     private State[] states;
     #endregion Field
@@ -40,13 +40,17 @@ public abstract class BaseSateMachine
     protected virtual void SetState(int index)
     {
         if (index >= 0 && index < states.Length)
+        {
             CurrentStateIndex = index;
+        }
     }
 
     protected void Update()
     {
         if (CurrentState != null)
+        {
             CurrentState.Update();
+        }
     }
 
     protected void CreateStates(int statesCount)

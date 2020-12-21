@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IFigure
 {
     FigureType FigureType { get; }
-    bool[] Cells { get; }
+    bool[] Cells { get; set; }
     Vector2Int[,] Positions { get; set; }
     int Width { get; }
     int Height { get; }

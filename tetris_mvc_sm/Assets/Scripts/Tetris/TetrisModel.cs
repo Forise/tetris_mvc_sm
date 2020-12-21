@@ -7,13 +7,24 @@ namespace Models
     public class TetrisModel : ITetrisModel
     {
         public event ModelChanged ModelChanged;
+        public event System.Action LineCleared;
 
         public int Width => 10;
 
         public int Height => 20;
 
+        private IFigure _figure;
+
         #region Properties
-        public IFigure Figure { get; set; }
+        public IFigure Figure 
+        {
+            get => _figure;
+            set
+            {
+                _figure = value;
+                ModelChanged?.Invoke();
+            }
+        }
 
         public CellState[,] Field
         {
@@ -88,6 +99,7 @@ namespace Models
                 {
                     MoveLineDown(y);
                     ++y;
+                    LineCleared?.Invoke();
                 }
             }
         }
@@ -159,6 +171,14 @@ namespace Models
             return false;
         }
 
+        public void DropFigure()
+        {
+            while (CanFigureMove(0, 1))
+            {
+                MoveFigureDown();
+            }
+        }
+
         private bool InternalMoveFigureHorizontal(int offsetX = -1)
         {
             if (Figure == null)
@@ -183,6 +203,10 @@ namespace Models
 
         private bool CanFigureMove(int offsetX, int offsetY)
         {
+            if (Figure == null)
+            {
+                return false;
+            }
             bool canMove = true;
             for (int x = 0; x < Figure.Width; x++)
             {
@@ -211,6 +235,10 @@ namespace Models
 
         private bool IsFigureInsideField()
         {
+            if (Figure == null)
+            {
+                return false;
+            }
             bool insideField = true;
             for (int x = 0; x < Figure.Width; x++)
             {
@@ -239,6 +267,10 @@ namespace Models
 
         public bool RotateFigureLeft()
         {
+            if (Figure == null)
+            {
+                return false;
+            }
             Figure.RotateLeft();
             if (IsFigureInsideField())
             {
@@ -253,6 +285,10 @@ namespace Models
 
         public bool RotateFigureRight()
         {
+            if(Figure == null)
+            {
+                return false;
+            }
             Figure.RotateRight();
             if (IsFigureInsideField())
             {

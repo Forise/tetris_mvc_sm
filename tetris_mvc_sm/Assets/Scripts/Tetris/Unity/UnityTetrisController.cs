@@ -9,6 +9,10 @@ public class UnityTetrisController : MonoBehaviour
     [SerializeField]
     private float _stepDelaySec = 0.5f;
     [SerializeField]
+    private float _reduceStepDelayByClearLine = 0.01f;
+    [SerializeField]
+    private float _minDelay = 0.1f;
+    [SerializeField]
     private UnityTetrisModel _unityTetrisModel;
     [SerializeField]
     private FigureFactory _figureFactory;
@@ -17,6 +21,11 @@ public class UnityTetrisController : MonoBehaviour
     private void Start()
     {
         var model = _unityTetrisModel.Model;
+        model.LineCleared += () => 
+        { 
+            _stepDelaySec -= _reduceStepDelayByClearLine;
+            _stepDelaySec = _stepDelaySec < _minDelay ? _minDelay : _stepDelaySec;
+        };
         Controller = new TetrisController(model, _figureFactory);
 #if TEST
         Controller.testInstantiate();
@@ -44,6 +53,12 @@ public class UnityTetrisController : MonoBehaviour
         {
             Controller.RotateFigureRight();
         }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Controller.DropFigure();
+        }
+
 #if TEST
         if(Input.GetKeyDown(KeyCode.Space))
         {
@@ -61,7 +76,7 @@ public class UnityTetrisController : MonoBehaviour
             yield return new WaitForSeconds(_stepDelaySec);
             if (!Controller.Step())
             {
-                //SceneManager.LoadScene("GameOver");
+                SceneManager.LoadScene("Loser");
                 run = false;
             }
         }
