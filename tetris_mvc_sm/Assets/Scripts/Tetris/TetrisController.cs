@@ -50,8 +50,8 @@ public class TetrisController : ITetrisController
 
         if (!Model.MoveFigureDown())
         {
-            //TetrisUtil.ImprintFigure(Model);
-            //TetrisUtil.EraseCompleteLines(Model);
+            Model.SetFigureToField();
+            Model.ClearCompletedLines();
             Model.Figure = null;
         }
 
@@ -68,7 +68,9 @@ public class TetrisController : ITetrisController
                 Model.Figure.Positions[x, y] = new Vector2Int(x, y);
             }
         }
+#if TEST
         Model.NotifyChanged();
+#endif
     }
 
     private bool FigureCollides(ITetrisModel model)
@@ -78,14 +80,14 @@ public class TetrisController : ITetrisController
             return false;
         }
 
-        //for (int y = 0; y < Figure.Height; y++)
-        //{
-        //    for (int x = 0; x < Figure.Width; x++)
-        //    {
-        //        if (Figure.At(x, y) && model.At(model.FigureX + x, model.FigureY + y))
-        //            return true;
-        //    }
-        //}
+        for (int y = 0; y < Model.Figure.Height; y++)
+        {
+            for (int x = 0; x < Model.Figure.Width; x++)
+            {
+                if (Model.Figure.IsCellPartOfFigure(x, y) && model.Field[Model.Figure.Positions[x, y].x, Model.Figure.Positions[x, y].y] != CellState.Empty)
+                    return true;
+            }
+        }
 
         return false;
     }

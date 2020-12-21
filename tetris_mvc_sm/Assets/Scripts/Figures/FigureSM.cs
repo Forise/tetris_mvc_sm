@@ -43,7 +43,7 @@ public class FigureSM : CycledStateMachine, IFigure
         InitializeMachine();
     }
 
-    private bool IsCellPartOfFigure(int x, int y)
+    public bool IsCellPartOfFigure(int x, int y)
     {
         return _cells[y * WIDTH + x];
     }

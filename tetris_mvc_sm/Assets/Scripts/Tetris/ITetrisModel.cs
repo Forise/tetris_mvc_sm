@@ -17,6 +17,8 @@ namespace Models
         bool MoveFigureDown();
         bool RotateFigureLeft();
         bool RotateFigureRight();
+        void SetFigureToField();
+        void ClearCompletedLines();
 #if TEST
         void NotifyChanged();
 #endif

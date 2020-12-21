@@ -57,6 +57,71 @@ namespace Models
             Figure = null;
         }
 
+        public void SetFigureToField()
+        {
+            if (Figure == null)
+            {
+                return;
+            }
+
+            int w = Figure.Width;
+            int h = Figure.Height;
+
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    if (Figure.IsCellPartOfFigure(x, y))
+                    {
+                        Vector2Int figurePos = Figure.Positions[x, y];
+                        Field[figurePos.x, figurePos.y] = CellState.Filled;
+                    }
+                }
+            }
+        }
+
+        public void ClearCompletedLines()
+        {
+            for (int y = Height - 1; y >= 0; y--)
+            {
+                if (IsLineCompleted(y))
+                {
+                    MoveLineDown(y);
+                    ++y;
+                }
+            }
+        }
+
+        private bool IsLineCompleted(int y)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                if (Field[x, y] == CellState.Empty)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void MoveLineDown(int targetY)
+        {
+            int w = Width;
+
+            for (int y = targetY; y > 0; y--)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    Field[x, y] = Field[x, y - 1];
+                }
+            }
+
+            for (int x = 0; x < w; x++)
+            {
+                Field[x, 0] = CellState.Empty;
+            }
+        }
+
         #region Move/Rotation
         public bool MoveFigureLeft()
         {

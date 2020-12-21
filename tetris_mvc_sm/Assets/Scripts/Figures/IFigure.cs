@@ -13,4 +13,5 @@ public interface IFigure
     Color Color { get; }
     void RotateRight();
     void RotateLeft();
+    bool IsCellPartOfFigure(int x, int y);
 }

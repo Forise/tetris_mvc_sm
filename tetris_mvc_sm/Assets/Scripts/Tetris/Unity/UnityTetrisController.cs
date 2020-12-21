@@ -7,6 +7,8 @@ using Models;
 public class UnityTetrisController : MonoBehaviour
 {
     [SerializeField]
+    private float _stepDelaySec = 0.5f;
+    [SerializeField]
     private UnityTetrisModel _unityTetrisModel;
     [SerializeField]
     private FigureFactory _figureFactory;
@@ -56,7 +58,7 @@ public class UnityTetrisController : MonoBehaviour
         bool run = true;
         while(run)
         {
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(_stepDelaySec);
             if (!Controller.Step())
             {
                 //SceneManager.LoadScene("GameOver");
