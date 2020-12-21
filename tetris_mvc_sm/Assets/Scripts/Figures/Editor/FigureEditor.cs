@@ -62,6 +62,7 @@ public class FigureEditor : Editor
                                         figure.FigureSM.SetCellRot270(x, y, newValue);
                                         break;
                                 }
+                                EditorUtility.SetDirty(this);
                                 EditorUtility.SetDirty(figure);
                             }
                         }
