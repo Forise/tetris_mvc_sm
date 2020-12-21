@@ -14,10 +14,14 @@ public class FigureSM : CycledStateMachine, IFigure
     private FigureType _figureType;
     private bool[] _cells = new bool[WIDTH * HEIGHT];
 
-    private bool[] _cellsRotation0 = new bool[WIDTH * HEIGHT];
-    private bool[] _cellsRotation90 = new bool[WIDTH * HEIGHT];
-    private bool[] _cellsRotation180 = new bool[WIDTH * HEIGHT];
-    private bool[] _cellsRotation270 = new bool[WIDTH * HEIGHT];
+    [SerializeField]
+    protected bool[] _cellsRotation0 = new bool[WIDTH * HEIGHT];
+    [SerializeField]
+    protected bool[] _cellsRotation90 = new bool[WIDTH * HEIGHT];
+    [SerializeField]
+    protected bool[] _cellsRotation180 = new bool[WIDTH * HEIGHT];
+    [SerializeField]
+    protected bool[] _cellsRotation270 = new bool[WIDTH * HEIGHT];
     #endregion Fields
 
     #region Properties
