@@ -16,3 +16,7 @@ MonoBehaviour:
     _updateStateTime: 0
     _color: {r: 1, g: 0.9167996, b: 0, a: 1}
     _figureType: 3
+    _cellsRotation0: 00000100000001000001010000000000
+    _cellsRotation90: 00010000000101010000000000000000
+    _cellsRotation180: 00000101000001000000010000000000
+    _cellsRotation270: 00000001000101010000000000000000

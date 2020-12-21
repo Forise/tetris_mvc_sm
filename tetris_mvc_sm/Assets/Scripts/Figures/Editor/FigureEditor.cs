@@ -5,7 +5,6 @@ public class FigureEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
         var figure = (Figure)serializedObject.targetObject;
 
         var statesType = typeof(FigureSM.RotationState);
@@ -71,5 +70,7 @@ public class FigureEditor : Editor
             }
             indexer++;
         }
+        EditorUtility.SetDirty(this);
+        base.OnInspectorGUI();
     }
 }
