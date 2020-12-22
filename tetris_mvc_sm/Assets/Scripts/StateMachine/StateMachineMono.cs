@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-
-public abstract class BaseSateMachine
+using UnityEngine;
+public abstract class StateMachineMono : MonoBehaviour, IStateMachine
 {
     #region Fields
     private int currentStateIndex = 0;
@@ -9,8 +8,8 @@ public abstract class BaseSateMachine
     #endregion Field
 
     #region Properties
-    protected State[] States => _states;
-    protected State CurrentState
+    public State[] States => _states;
+    public State CurrentState
     {
         get { return currentState; }
         private set
@@ -23,7 +22,7 @@ public abstract class BaseSateMachine
         }
     }
 
-    protected int CurrentStateIndex
+    public int CurrentStateIndex
     {
         get { return currentStateIndex; }
         private set
@@ -34,10 +33,10 @@ public abstract class BaseSateMachine
             CurrentState = _states[currentStateIndex];
         }
     }
-    #endregion
+    #endregion Properties
 
     #region Methods
-    protected virtual void SetState(int index)
+    public virtual void SetState(int index)
     {
         if (index >= 0 && index < _states.Length)
         {
@@ -45,7 +44,7 @@ public abstract class BaseSateMachine
         }
     }
 
-    protected void Update()
+    public virtual void Update()
     {
         if (CurrentState != null)
         {
@@ -53,12 +52,12 @@ public abstract class BaseSateMachine
         }
     }
 
-    protected void CreateStates(int statesCount)
+    public void CreateStates(int statesCount)
     {
         _states = new State[statesCount];
     }
 
-    protected void CreateStates(System.Type statesEnum)
+    public void CreateStates(System.Type statesEnum)
     {
         _states = new State[System.Enum.GetValues(statesEnum).Length];
     }
@@ -70,13 +69,13 @@ public abstract class BaseSateMachine
     /// <param name="init">The handler of init state.</param>
     /// <param name="update">The handler of update state.</param>
     /// <param name="close">The handler of close state.</param>
-    protected void InitializeState(int stateIndex, State.StateHandler init, State.StateHandler update, State.StateHandler close)
+    public void InitializeState(int stateIndex, State.StateHandler init, State.StateHandler update, State.StateHandler close)
     {
         if (stateIndex >= _states.Length)
             Debug.LogError($"[{this.GetType()}] {System.Reflection.MethodInfo.GetCurrentMethod().Name} index of state {stateIndex} is out of range!");
         _states[stateIndex] = new State(init, update, close);
     }
 
-    protected abstract void InitializeMachine();
-    #endregion
+    public abstract void InitializeMachine();
+    #endregion Methods
 }

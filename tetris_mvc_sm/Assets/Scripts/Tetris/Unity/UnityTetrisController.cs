@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Models;
 
-public class UnityTetrisController : MonoBehaviour
+public class UnityTetrisController : StateMachineMono
 {
     [SerializeField]
     private float _stepDelaySec = 0.5f;
@@ -16,26 +16,18 @@ public class UnityTetrisController : MonoBehaviour
     private UnityTetrisModel _unityTetrisModel;
     [SerializeField]
     private FigureFactory _figureFactory;
+    private bool _run = false;
+    private float _deltaFromStep = 0f;
     public TetrisController Controller { get; private set; }
 
     private void Start()
     {
-        var model = _unityTetrisModel.Model;
-        model.LineCleared += () => 
-        { 
-            _stepDelaySec -= _reduceStepDelayByClearLine;
-            _stepDelaySec = _stepDelaySec < _minDelay ? _minDelay : _stepDelaySec;
-        };
-        Controller = new TetrisController(model, _figureFactory);
-#if TEST
-        Controller.testInstantiate();
-#else
-        StartCoroutine(Run());
-#endif
+        InitializeMachine();
     }
 
-    private void Update()
+    public override void Update()
     {
+        base.Update();
         if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
             Controller.MoveFigureLeft();
@@ -68,17 +60,56 @@ public class UnityTetrisController : MonoBehaviour
 #endif
     }
 
-    IEnumerator Run()
+    #region State Machine
+    public enum TetrisGameState
     {
-        bool run = true;
-        while(run)
+        Gameplay = 0,
+        Lose = 1
+    }
+
+    public override void InitializeMachine()
+    {
+        CreateStates(typeof(TetrisGameState));
+        InitializeState((int)TetrisGameState.Gameplay, InitGameplayState, UpdateGameplyState, null);
+        InitializeState((int)TetrisGameState.Lose, InitLoseState, null, null);
+        SetState(0);
+    }
+
+    private void InitGameplayState()
+    {
+        var model = _unityTetrisModel.Model;
+        model.LineCleared += () => 
+        { 
+            _stepDelaySec -= _reduceStepDelayByClearLine;
+            _stepDelaySec = _stepDelaySec < _minDelay ? _minDelay : _stepDelaySec;
+        };
+        Controller = new TetrisController(model, _figureFactory);
+        _run = true;
+#if TEST
+        Controller.testInstantiate();
+#endif
+    }
+
+    private void UpdateGameplyState()
+    {
+        if(_run)
         {
-            yield return new WaitForSeconds(_stepDelaySec);
-            if (!Controller.Step())
+            _deltaFromStep += Time.deltaTime;
+            if(_deltaFromStep >= _stepDelaySec)
             {
-                SceneManager.LoadScene("Loser");
-                run = false;
+                _deltaFromStep = 0f;
+                if (!Controller.Step())
+                {
+                    _run = false;
+                    SetState(1);
+                }
             }
         }
     }
+
+    private void InitLoseState()
+    {
+        SceneManager.LoadScene("Loser");
+    }
+    #endregion State Machine
 }
