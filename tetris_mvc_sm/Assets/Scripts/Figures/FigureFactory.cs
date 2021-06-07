@@ -7,6 +7,7 @@ public class FigureFactory : ScriptableObject, IFigureFactory
     [SerializeField]
     private Figure[] _figures;
 #else
+    //need to remove _
     public Figure[] _figures;
     public Figure[] Figures => _figures;
 #endif
