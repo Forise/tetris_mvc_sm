@@ -1,4 +1,5 @@
-﻿public interface IStateMachine
+// a lot of members, need to split for several interfaces﻿
+public interface IStateMachine
 {
     State CurrentState { get; }
     State[] States { get; }
