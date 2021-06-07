@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// a lot of members need to split for several interfaces
 public interface IFigure
 {
     FigureType FigureType { get; }
