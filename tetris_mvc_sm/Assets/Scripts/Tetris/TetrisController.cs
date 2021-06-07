@@ -50,7 +50,9 @@ public class TetrisController : ITetrisController
         {
             InstantiateFigure(Model, Factory);
             if (FigureCollides(Model))
+            {
                 return false;
+            }
         }
 
         if (!Model.MoveFigureDown())
@@ -108,7 +110,9 @@ public class TetrisController : ITetrisController
             for (int x = 0; x < Model.Figure.Width; x++)
             {
                 if (Model.Figure.IsCellPartOfFigure(x, y) && model.Field[Model.Figure.Positions[x, y].x, Model.Figure.Positions[x, y].y] != CellState.Empty)
+                {
                     return true;
+                }
             }
         }
 
