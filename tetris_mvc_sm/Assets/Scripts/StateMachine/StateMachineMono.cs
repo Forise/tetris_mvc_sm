@@ -2,6 +2,7 @@ using UnityEngine;
 public abstract class StateMachineMono : MonoBehaviour, IStateMachine
 {
     #region Fields
+    //code convention is broken; need to add _ or remove _
     private int currentStateIndex = 0;
     private State currentState;
     private State[] _states;
@@ -11,24 +12,30 @@ public abstract class StateMachineMono : MonoBehaviour, IStateMachine
     public State[] States => _states;
     public State CurrentState
     {
-        get { return currentState; }
+        get => currentState;
         private set
         {
             currentState = value;
             if (currentState != null)
+            {
                 currentState.Init();
+            }
             else
+            {
                 Debug.LogWarning("[" + GetType() + "] " + "New state is null");
+            }
         }
     }
 
     public int CurrentStateIndex
     {
-        get { return currentStateIndex; }
+        get => currentStateIndex;
         private set
         {
             if (currentState != null)
+            {
                 currentState.Close();
+            }
             currentStateIndex = value;
             CurrentState = _states[currentStateIndex];
         }
@@ -72,7 +79,9 @@ public abstract class StateMachineMono : MonoBehaviour, IStateMachine
     public void InitializeState(int stateIndex, State.StateHandler init, State.StateHandler update, State.StateHandler close)
     {
         if (stateIndex >= _states.Length)
+        {
             Debug.LogError($"[{this.GetType()}] {System.Reflection.MethodInfo.GetCurrentMethod().Name} index of state {stateIndex} is out of range!");
+        }
         _states[stateIndex] = new State(init, update, close);
     }
 
