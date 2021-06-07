@@ -12,24 +12,30 @@ public abstract class BaseSateMachine
     protected State[] States => _states;
     protected State CurrentState
     {
-        get { return currentState; }
+        get => currentState;
         private set
         {
             currentState = value;
             if (currentState != null)
+            {
                 currentState.Init();
+            }
             else
+            {
                 Debug.LogWarning("[" + GetType() + "] " + "New state is null");
+            }
         }
     }
 
     protected int CurrentStateIndex
     {
-        get { return currentStateIndex; }
+        get => currentStateIndex;
         private set
         {
             if (currentState != null)
+            {
                 currentState.Close();
+            }
             currentStateIndex = value;
             CurrentState = _states[currentStateIndex];
         }
@@ -73,7 +79,9 @@ public abstract class BaseSateMachine
     protected void InitializeState(int stateIndex, State.StateHandler init, State.StateHandler update, State.StateHandler close)
     {
         if (stateIndex >= _states.Length)
+        {
             Debug.LogError($"[{this.GetType()}] {System.Reflection.MethodInfo.GetCurrentMethod().Name} index of state {stateIndex} is out of range!");
+        }
         _states[stateIndex] = new State(init, update, close);
     }
 
